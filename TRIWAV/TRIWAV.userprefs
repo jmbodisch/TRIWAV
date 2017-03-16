@@ -1,9 +1,10 @@
-﻿<Properties StartupItem="Assembly-CSharp.csproj">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\GameController.cs">
+﻿<Properties StartupItem="TRIWAV.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Note.cs">
     <Files>
       <File FileName="Assets\Spin.cs" Line="13" Column="3" />
       <File FileName="Assets\GameController.cs" Line="17" Column="3" />
+      <File FileName="Assets\Note.cs" Line="17" Column="16" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
