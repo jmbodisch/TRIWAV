@@ -44,15 +44,20 @@ public class Note : MonoBehaviour {
 			gameObject.GetComponent<SpriteRenderer> ().color = Color.cyan;
 	}
 
-	public void Kill(){
+	public void Tap(){
 		float timing = Mathf.Abs (lifetime);
 		if (timing < Constants.POOR) {
 			if (timing < Constants.GOOD)
 				GameController.combo++;
 			else
 				GameController.combo = 0;
-			Destroy (gameObject);
+			Kill ();
 			GameController.combo = 0;
 		}
+	}
+
+	private void Kill() {
+		target.GetComponent<Target> ().removeNote (gameObject);
+		Destroy (gameObject);
 	}
 }

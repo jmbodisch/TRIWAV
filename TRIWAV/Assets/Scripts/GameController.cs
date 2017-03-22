@@ -43,27 +43,27 @@ public class GameController : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.H))
 			topRight.GetComponent<Target> ().press ();
 		if (Input.GetKeyDown (KeyCode.B))
-			topRight.GetComponent<Target> ().press ();
+			bottom.GetComponent<Target> ().press ();
 	}
 
 	private void makeTopLeft()
 	{
 		var newNote = Instantiate (note);
 		newNote.GetComponent<Note>().Initialize(topLeft, scrollSpeed);
-		topLeft.GetComponent<Target> ().addNote (note);
+		topLeft.GetComponent<Target> ().addNote (newNote);
 	}
 
 	private void makeTopRight()
 	{
 		var newNote = Instantiate (note);
 		newNote.GetComponent<Note>().Initialize(topRight, scrollSpeed);
-		topRight.GetComponent<Target> ().addNote (note);
+		topRight.GetComponent<Target> ().addNote (newNote);
 	}
 
 	private void makeBottom()
 	{
 		var newNote = Instantiate (note);
 		newNote.GetComponent<Note>().Initialize(bottom, scrollSpeed);
-		bottom.GetComponent<Target> ().addNote (note);
+		bottom.GetComponent<Target> ().addNote (newNote);
 	}
 }
