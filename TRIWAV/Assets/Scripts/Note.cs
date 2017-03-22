@@ -12,6 +12,9 @@ public class Note : MonoBehaviour {
 	public void Initialize(GameObject target, float lifetime)
 	{
 		this.target = target;
+
+		target.GetComponent<Target> ().addNote (gameObject);
+
 		this.lifetime = lifetime + Constants.POOR;
 
 		//calculate speed of note

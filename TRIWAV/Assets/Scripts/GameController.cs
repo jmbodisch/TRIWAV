@@ -50,20 +50,17 @@ public class GameController : MonoBehaviour {
 	{
 		var newNote = Instantiate (note);
 		newNote.GetComponent<Note>().Initialize(topLeft, scrollSpeed);
-		topLeft.GetComponent<Target> ().addNote (newNote);
 	}
 
 	private void makeTopRight()
 	{
 		var newNote = Instantiate (note);
 		newNote.GetComponent<Note>().Initialize(topRight, scrollSpeed);
-		topRight.GetComponent<Target> ().addNote (newNote);
 	}
 
 	private void makeBottom()
 	{
 		var newNote = Instantiate (note);
 		newNote.GetComponent<Note>().Initialize(bottom, scrollSpeed);
-		bottom.GetComponent<Target> ().addNote (newNote);
 	}
 }
