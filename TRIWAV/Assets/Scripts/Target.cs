@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Target : MonoBehaviour {
 
-	private List<GameObject> notes;
+	public List<GameObject> notes;
 
 	public void addNote(GameObject note) {
 		notes.Add (note);
@@ -17,8 +17,7 @@ public class Target : MonoBehaviour {
 	public void press() {
 		if (notes.Count > 0) {
 			GameObject note = notes [0];
-			notes.Remove (note);
-			note.GetComponent<Note> ().Kill ();
+			note.GetComponent<Note> ().Tap ();
 		}
 	}
 
