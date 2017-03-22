@@ -14,10 +14,6 @@ public class GameController : MonoBehaviour {
 	public GameObject topLeft, topRight, bottom;
 	public GameObject note;
 
-	public List<GameObject> topLeftNotes;
-	private List<GameObject> topRightNotes;
-	private List<GameObject> bottomNotes;
-
 	void Start()
 	{
 		score = 0;
@@ -25,10 +21,6 @@ public class GameController : MonoBehaviour {
 		combo = 0;
 		scrollSpeed = .25f;
 		bpm = 90;
-
-		topLeftNotes = new List<GameObject> ();
-		topRightNotes = new List<GameObject> ();
-		bottomNotes = new List<GameObject> ();
 	}
 
 	void Update()
@@ -47,58 +39,31 @@ public class GameController : MonoBehaviour {
 			makeBottom ();
 
 		if (Input.GetKeyDown (KeyCode.G))
-			topLeftPress ();
+			topLeft.GetComponent<Target> ().press ();
 		if (Input.GetKeyDown (KeyCode.H))
-			topRightPress ();
+			topRight.GetComponent<Target> ().press ();
 		if (Input.GetKeyDown (KeyCode.B))
-			bottomPress ();
+			topRight.GetComponent<Target> ().press ();
 	}
 
 	private void makeTopLeft()
 	{
 		var newNote = Instantiate (note);
-		newNote.GetComponent<Note>().Initialize(topLeft.transform, scrollSpeed);
-		topLeftNotes.Add (newNote);
+		newNote.GetComponent<Note>().Initialize(topLeft, scrollSpeed);
+		topLeft.GetComponent<Target> ().addNote (note);
 	}
 
 	private void makeTopRight()
 	{
 		var newNote = Instantiate (note);
-		newNote.GetComponent<Note>().Initialize(topRight.transform, scrollSpeed);
-		topRightNotes.Add (newNote);
+		newNote.GetComponent<Note>().Initialize(topRight, scrollSpeed);
+		topRight.GetComponent<Target> ().addNote (note);
 	}
 
 	private void makeBottom()
 	{
 		var newNote = Instantiate (note);
-		newNote.GetComponent<Note>().Initialize(bottom.transform, scrollSpeed);
-		bottomNotes.Add (newNote);
-	}
-
-	private void topLeftPress()
-	{
-		if (topLeftNotes.Count > 0) {
-			GameObject note = topLeftNotes [0];
-			topLeftNotes.Remove (note);
-			note.GetComponent<Note> ().Kill ();
-		}
-	}
-
-	private void bottomPress()
-	{
-		if (bottomNotes.Count > 0) {
-			GameObject note = bottomNotes [0];
-			bottomNotes.Remove (note);
-			note.GetComponent<Note> ().Kill ();
-		}
-	}
-
-	private void topRightPress()
-	{
-		if (topRightNotes.Count > 0) {
-			GameObject note = topRightNotes [0];
-			topRightNotes.Remove (note);
-			note.GetComponent<Note> ().Kill ();
-		}
+		newNote.GetComponent<Note>().Initialize(bottom, scrollSpeed);
+		bottom.GetComponent<Target> ().addNote (note);
 	}
 }

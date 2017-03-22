@@ -4,25 +4,25 @@ using UnityEngine;
 
 public class Note : MonoBehaviour {
 
-	private Transform target;
+	private GameObject target;
 	private float lifetime;
 	private float speed;
 	private float growSpeed;
 
-	public void Initialize(Transform target, float lifetime)
+	public void Initialize(GameObject target, float lifetime)
 	{
 		this.target = target;
 		this.lifetime = lifetime + Constants.POOR;
 
 		//calculate speed of note
-		this.speed = (Vector3.Distance(transform.position, target.position) / lifetime);
+		this.speed = (Vector3.Distance(transform.position, target.transform.position) / lifetime);
 		this.growSpeed = (10 / lifetime);
 	}
 		
 	// Update is called once per frame
 	void Update () {
 		float step = speed * Time.deltaTime;
-		transform.position = Vector3.MoveTowards (transform.position, target.position, step);
+		transform.position = Vector3.MoveTowards (transform.position, target.transform.position, step);
 
 		float growStep = growSpeed * Time.deltaTime;
 		transform.localScale += new Vector3 (growStep, growStep, growStep);
