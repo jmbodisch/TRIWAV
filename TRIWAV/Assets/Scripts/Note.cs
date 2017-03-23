@@ -7,19 +7,23 @@ public class Note : MonoBehaviour {
 	private GameObject target;
 	private float lifetime;
 	private float speed;
+	private float timeToNote;
 	private float growSpeed;
 
-	public void Initialize(GameObject target, float lifetime)
+	public void Initialize(GameObject target, float timeToNote)
 	{
 		this.target = target;
+		this.timeToNote = timeToNote;
 
-		target.GetComponent<Target> ().addNote (gameObject);
-
-		this.lifetime = lifetime + Constants.POOR;
+		//Calculate total lifetime of note
+		this.lifetime = timeToNote + Constants.GOOD;
 
 		//calculate speed of note
 		this.speed = (Vector3.Distance(transform.position, target.transform.position) / lifetime);
 		this.growSpeed = (10 / lifetime);
+
+		//Add the note to the target's list of notes
+		target.GetComponent<Target> ().addNote (gameObject);
 	}
 		
 	// Update is called once per frame
