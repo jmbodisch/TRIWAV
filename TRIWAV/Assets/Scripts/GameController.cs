@@ -16,6 +16,7 @@ public class GameController : MonoBehaviour {
 
 	void Start()
 	{
+		Screen.SetResolution (800, 1280, false);
 		score = 0;
 		health = 100;
 		combo = 0;
