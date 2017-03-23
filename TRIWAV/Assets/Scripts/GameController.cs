@@ -19,7 +19,7 @@ public class GameController : MonoBehaviour {
 		score = 0;
 		health = 100;
 		combo = 0;
-		scrollSpeed = .25f;
+		scrollSpeed = 1f;
 		bpm = 90;
 	}
 
