@@ -7,19 +7,23 @@ public class Note : MonoBehaviour {
 	private GameObject target;
 	private float lifetime;
 	private float speed;
+	private float timeToNote;
 	private float growSpeed;
 
-	public void Initialize(GameObject target, float lifetime)
+	public void Initialize(GameObject target, float timeToNote)
 	{
 		this.target = target;
+		this.timeToNote = timeToNote;
 
-		target.GetComponent<Target> ().addNote (gameObject);
-
-		this.lifetime = lifetime + Constants.POOR;
+		//Calculate total lifetime of note
+		this.lifetime = 0;
 
 		//calculate speed of note
-		this.speed = (Vector3.Distance(transform.position, target.transform.position) / lifetime);
-		this.growSpeed = (10 / lifetime);
+		this.speed = (Vector3.Distance(transform.position, target.transform.position) / timeToNote);
+		this.growSpeed = (10 / timeToNote);
+
+		//Add the note to the target's list of notes
+		target.GetComponent<Target> ().addNote (gameObject);
 	}
 		
 	// Update is called once per frame
@@ -30,11 +34,35 @@ public class Note : MonoBehaviour {
 		float growStep = growSpeed * Time.deltaTime;
 		transform.localScale += new Vector3 (growStep, growStep, growStep);
 
-		lifetime -= Time.deltaTime;
-		if (lifetime <= Constants.POOR * -1)
-			Kill ();
+		lifetime += Time.deltaTime;
+		if (lifetime > timeToNote + Constants.GOOD)
+			Kill (false);
 		
-		float timing = Mathf.Abs (lifetime);
+		updateColor ();
+	}
+
+	public void Tap(){
+		float timing = Mathf.Abs (timeToNote - lifetime);
+		if (timing <= Constants.GOOD)
+			Kill (true);
+		else if (timing <= Constants.POOR)
+			Kill (false);
+	}
+
+	private void Kill(bool combo) {
+		Debug.Log ("Kill called. Combo: " + combo.ToString ());
+		if (combo)
+			GameController.combo += 1;
+		else
+			GameController.combo = 0;
+		
+		target.GetComponent<Target> ().removeNote (gameObject);
+		Destroy (gameObject);
+	}
+
+	//DEBUG Function.
+	private void updateColor() {
+		float timing = Mathf.Abs(timeToNote - lifetime);
 		if (timing > Constants.POOR)
 			gameObject.GetComponent<SpriteRenderer> ().color = Color.red;
 		else if (timing > Constants.GOOD && timing < Constants.POOR)
@@ -45,22 +73,5 @@ public class Note : MonoBehaviour {
 			gameObject.GetComponent<SpriteRenderer> ().color = Color.yellow;
 		else if (timing < Constants.PERFECT)
 			gameObject.GetComponent<SpriteRenderer> ().color = Color.cyan;
-	}
-
-	public void Tap(){
-		float timing = Mathf.Abs (lifetime);
-		if (timing < Constants.POOR) {
-			if (timing < Constants.GOOD)
-				GameController.combo++;
-			else
-				GameController.combo = 0;
-			Kill ();
-			GameController.combo = 0;
-		}
-	}
-
-	private void Kill() {
-		target.GetComponent<Target> ().removeNote (gameObject);
-		Destroy (gameObject);
 	}
 }
