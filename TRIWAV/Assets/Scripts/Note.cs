@@ -16,11 +16,11 @@ public class Note : MonoBehaviour {
 		this.timeToNote = timeToNote;
 
 		//Calculate total lifetime of note
-		this.lifetime = timeToNote;
+		this.lifetime = 0;
 
 		//calculate speed of note
-		this.speed = (Vector3.Distance(transform.position, target.transform.position) / lifetime);
-		this.growSpeed = (10 / lifetime);
+		this.speed = (Vector3.Distance(transform.position, target.transform.position) / timeToNote);
+		this.growSpeed = (10 / timeToNote);
 
 		//Add the note to the target's list of notes
 		target.GetComponent<Target> ().addNote (gameObject);
@@ -34,18 +34,18 @@ public class Note : MonoBehaviour {
 		float growStep = growSpeed * Time.deltaTime;
 		transform.localScale += new Vector3 (growStep, growStep, growStep);
 
-		lifetime -= Time.deltaTime;
-		if (lifetime <= Constants.GOOD * -1)
+		lifetime += Time.deltaTime;
+		if (lifetime > timeToNote + Constants.GOOD)
 			Kill (false);
 		
 		updateColor ();
 	}
 
 	public void Tap(){
-		float timing = Mathf.Abs (lifetime);
-		if (timing > Constants.GOOD)
+		float timing = Mathf.Abs (timeToNote - lifetime);
+		if (timing <= Constants.GOOD)
 			Kill (true);
-		else
+		else if (timing <= Constants.POOR)
 			Kill (false);
 	}
 
@@ -62,7 +62,7 @@ public class Note : MonoBehaviour {
 
 	//DEBUG Function.
 	private void updateColor() {
-		float timing = Mathf.Abs(lifetime);
+		float timing = Mathf.Abs(timeToNote - lifetime);
 		if (timing > Constants.POOR)
 			gameObject.GetComponent<SpriteRenderer> ().color = Color.red;
 		else if (timing > Constants.GOOD && timing < Constants.POOR)
