@@ -9,7 +9,7 @@ public class GameController : MonoBehaviour {
 	public static int combo;
 	public static int bpm;
 	public static float scrollSpeed;
-	public GUIText scoreText, healthText, comboText, bpmText;
+	public GUIText scoreText, healthText, comboText, bpmText, timingText;
 
 	public GameObject topLeft, topRight, bottom;
 	public GameObject note;
