@@ -64,4 +64,9 @@ public class GameController : MonoBehaviour {
 		var newNote = Instantiate (note);
 		newNote.GetComponent<Note>().Initialize(bottom, scrollSpeed);
 	}
+
+	public void updateTimingWindow(string judge)
+	{
+		timingText.text = judge;
+	}
 }
