@@ -35,8 +35,10 @@ public class Note : MonoBehaviour {
 		transform.localScale += new Vector3 (growStep, growStep, growStep);
 
 		lifetime += Time.deltaTime;
-		if (lifetime > timeToNote + Constants.GOOD)
+		if (lifetime > timeToNote + Constants.GOOD) {
+			GameController.judge = "Miss";
 			Kill (false);
+		}
 		
 		updateColor ();
 	}
@@ -44,12 +46,22 @@ public class Note : MonoBehaviour {
 	public void Tap(){
 		float timing = Mathf.Abs (timeToNote - lifetime);
 		if (timing <= Constants.PERFECT) { //Perfect
+			GameController.judge = "Perfect";
+			GameController.score += 100;
 			Kill (true);
-		} else if (timing <= Constants.GREAT) { //Great
+		}
+		else if (timing <= Constants.GREAT) { //Great
+			GameController.judge = "Great";
+			GameController.score += 70;
 			Kill (true);
-		} else if (timing <= Constants.GOOD) { //Good
+		}
+		else if (timing <= Constants.GOOD) { //Good
+			GameController.judge = "Good";
+			GameController.score += 100;
 			Kill (true);
-		} else if (timing <= Constants.POOR) {//Poor
+		} 
+		else if (timing <= Constants.POOR) {//Poor
+			GameController.judge = "Poor";
 			Kill (false);
 		}
 	}

@@ -9,6 +9,7 @@ public class GameController : MonoBehaviour {
 	public static int combo;
 	public static int bpm;
 	public static float scrollSpeed;
+	public static string judge;
 	public GUIText scoreText, healthText, comboText, bpmText, timingText;
 
 	public GameObject topLeft, topRight, bottom;
@@ -22,6 +23,7 @@ public class GameController : MonoBehaviour {
 		combo = 0;
 		scrollSpeed = 1f;
 		bpm = 90;
+		judge = "";
 	}
 
 	void Update()
@@ -30,6 +32,7 @@ public class GameController : MonoBehaviour {
 		healthText.text = health.ToString ();
 		comboText.text = combo.ToString ();
 		bpmText.text = bpm.ToString ();
+		timingText.text = judge;
 
 		//Keyboard handlers
 		if(Input.GetKeyDown (KeyCode.A))
@@ -64,9 +67,6 @@ public class GameController : MonoBehaviour {
 		var newNote = Instantiate (note);
 		newNote.GetComponent<Note>().Initialize(bottom, scrollSpeed);
 	}
+		
 
-	public void updateTimingWindow(string judge)
-	{
-		timingText.text = judge;
-	}
 }
