@@ -43,14 +43,18 @@ public class Note : MonoBehaviour {
 
 	public void Tap(){
 		float timing = Mathf.Abs (timeToNote - lifetime);
-		if (timing <= Constants.GOOD)
+		if (timing <= Constants.PERFECT) { //Perfect
 			Kill (true);
-		else if (timing <= Constants.POOR)
+		} else if (timing <= Constants.GREAT) { //Great
+			Kill (true);
+		} else if (timing <= Constants.GOOD) { //Good
+			Kill (true);
+		} else if (timing <= Constants.POOR) {//Poor
 			Kill (false);
+		}
 	}
 
 	private void Kill(bool combo) {
-		Debug.Log ("Kill called. Combo: " + combo.ToString ());
 		if (combo)
 			GameController.combo += 1;
 		else
