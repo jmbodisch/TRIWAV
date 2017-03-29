@@ -37,6 +37,7 @@ public class Note : MonoBehaviour {
 		lifetime += Time.deltaTime;
 		if (lifetime > timeToNote + Constants.GOOD) {
 			GameController.judge = "Miss";
+			GameController.miss();
 			Kill (false);
 		}
 		
@@ -62,6 +63,7 @@ public class Note : MonoBehaviour {
 		} 
 		else if (timing <= Constants.POOR) {//Poor
 			GameController.judge = "Poor";
+			GameController.poor();
 			Kill (false);
 		}
 	}

@@ -68,5 +68,12 @@ public class GameController : MonoBehaviour {
 		newNote.GetComponent<Note>().Initialize(bottom, scrollSpeed);
 	}
 		
-
+	public static void miss()
+	{
+		health -= 20;
+	}
+	public static void poor()
+	{
+		health -= 10;
+	}
 }
