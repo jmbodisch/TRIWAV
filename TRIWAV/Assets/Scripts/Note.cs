@@ -37,7 +37,7 @@ public class Note : MonoBehaviour {
 		lifetime += Time.deltaTime;
 		if (lifetime > timeToNote + Constants.GOOD) {
 			GameController.judge = "Miss";
-			GameController.updateHealth(-20);
+			GameController.updateHealth(-8);
 			Kill (false);
 		}
 		
@@ -49,24 +49,23 @@ public class Note : MonoBehaviour {
 		if (timing <= Constants.PERFECT) { //Perfect
 			GameController.judge = "Perfect";
 			GameController.score += 100;
-			GameController.updateHealth (8);
+			GameController.updateHealth (5);
 			Kill (true);
 		}
 		else if (timing <= Constants.GREAT) { //Great
 			GameController.judge = "Great";
 			GameController.score += 70;
-			GameController.updateHealth (4);
+			GameController.updateHealth (3);
 			Kill (true);
 		}
 		else if (timing <= Constants.GOOD) { //Good
 			GameController.judge = "Good";
 			GameController.score += 100;
-			GameController.updateHealth (2);
 			Kill (true);
 		} 
 		else if (timing <= Constants.POOR) {//Poor
 			GameController.judge = "Poor";
-			GameController.updateHealth(-10);
+			GameController.updateHealth(-4);
 			Kill (false);
 		}
 	}
