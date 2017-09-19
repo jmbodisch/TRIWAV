@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour {
 
@@ -11,6 +12,7 @@ public class GameController : MonoBehaviour {
 	public static float scrollSpeed;
 	public static string judge;
 	public GUIText scoreText, healthText, comboText, bpmText, timingText;
+	public Slider healthSlider;
 
 	public GameObject topLeft, topRight, bottom;
 	public GameObject note;
@@ -32,6 +34,7 @@ public class GameController : MonoBehaviour {
 		healthText.text = health.ToString ();
 		comboText.text = combo.ToString ();
 		bpmText.text = bpm.ToString ();
+		healthSlider.value = health;
 		timingText.text = judge;
 
 		//Keyboard handlers
@@ -67,6 +70,13 @@ public class GameController : MonoBehaviour {
 		var newNote = Instantiate (note);
 		newNote.GetComponent<Note>().Initialize(bottom, scrollSpeed);
 	}
-		
 
+	public static void updateHealth(int delta)
+	{
+		health += delta;
+		if (health > 100)
+			health = 100;
+		if (health < 0)
+			health = 0;
+	}
 }
