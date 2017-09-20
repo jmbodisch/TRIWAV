@@ -11,7 +11,7 @@ public class GameController : MonoBehaviour {
 	public static int bpm;
 	public static float scrollSpeed;
 	public static string judge;
-	public GUIText scoreText, healthText, comboText, bpmText, timingText;
+	public Text scoreText, healthText, comboText, bpmText, timingText;
 	public Slider healthSlider;
 
 	public GameObject topLeft, topRight, bottom;
