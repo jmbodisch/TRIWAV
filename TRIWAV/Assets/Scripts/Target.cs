@@ -5,6 +5,9 @@ using UnityEngine;
 public class Target : MonoBehaviour {
 
 	public List<GameObject> notes;
+	private Vector3 touchPosition;
+	private float swipeResistance = 50.0f;
+	private bool beingTouched;
 
 	public void addNote(GameObject note) {
 		notes.Add (note);
@@ -21,12 +24,30 @@ public class Target : MonoBehaviour {
 		}
 	}
 
+	void swipe()
+	{
+		Debug.Log ("Hey");
+	}
+
+	void OnMouseDown()
+	{
+		press();
+		touchPosition = Input.mousePosition;
+		beingTouched = true;
+	}
+
 	void Start () {
 		notes = new List<GameObject> ();
 	}
 
 	// Update is called once per frame
 	void Update () {
-		
+		if (Input.GetMouseButtonUp (0)) {
+			Vector2 deltaSwipe = touchPosition - Input.mousePosition;
+			if ((Mathf.Abs(deltaSwipe.magnitude) > swipeResistance) && beingTouched) {
+				swipe ();
+			}
+			beingTouched = false;
+		}
 	}
 }
