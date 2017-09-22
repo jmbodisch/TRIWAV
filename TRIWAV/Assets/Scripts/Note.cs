@@ -5,6 +5,7 @@ using UnityEngine;
 public class Note : MonoBehaviour {
 
 	private GameObject target;
+	public string type;
 	private float lifetime;
 	private float speed;
 	private float timeToNote;
@@ -41,7 +42,7 @@ public class Note : MonoBehaviour {
 			Kill (false);
 		}
 		
-		updateColor ();
+		//updateColor ();
 	}
 
 	public void Tap(){

@@ -15,7 +15,7 @@ public class GameController : MonoBehaviour {
 	public Slider healthSlider;
 
 	public GameObject topLeft, topRight, bottom;
-	public GameObject note;
+	public GameObject note, swipe;
 
 	void Start()
 	{
@@ -45,6 +45,13 @@ public class GameController : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.Z))
 			makeBottom ();
 
+		if(Input.GetKeyDown (KeyCode.D))
+			makeTopLeftSwipe ();
+		if (Input.GetKeyDown (KeyCode.F))
+			makeTopRightSwipe ();
+		if (Input.GetKeyDown (KeyCode.C))
+			makeBottomSwipe ();
+
 		if (Input.GetKeyDown (KeyCode.G))
 			topLeft.GetComponent<Target> ().press ();
 		if (Input.GetKeyDown (KeyCode.H))
@@ -68,6 +75,24 @@ public class GameController : MonoBehaviour {
 	private void makeBottom()
 	{
 		var newNote = Instantiate (note);
+		newNote.GetComponent<Note>().Initialize(bottom, scrollSpeed);
+	}
+
+	private void makeTopLeftSwipe()
+	{
+		var newNote = Instantiate (swipe);
+		newNote.GetComponent<Note>().Initialize(topLeft, scrollSpeed);
+	}
+
+	private void makeTopRightSwipe()
+	{
+		var newNote = Instantiate (swipe);
+		newNote.GetComponent<Note>().Initialize(topRight, scrollSpeed);
+	}
+
+	private void makeBottomSwipe()
+	{
+		var newNote = Instantiate (swipe);
 		newNote.GetComponent<Note>().Initialize(bottom, scrollSpeed);
 	}
 

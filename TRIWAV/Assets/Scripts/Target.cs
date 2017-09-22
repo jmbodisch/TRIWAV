@@ -20,13 +20,19 @@ public class Target : MonoBehaviour {
 	public void press() {
 		if (notes.Count > 0) {
 			GameObject note = notes [0];
-			note.GetComponent<Note> ().Tap ();
+			if (note.GetComponent<Note> ().type == "tap") {
+				note.GetComponent<Note> ().Tap ();
+			}
 		}
 	}
 
-	void swipe()
-	{
-		Debug.Log ("Hey");
+	public void swipe() {
+		if (notes.Count > 0) {
+			GameObject note = notes [0];
+			if (note.GetComponent<Note> ().type == "swipe") {
+				note.GetComponent<Note> ().Tap ();
+			}
+		}
 	}
 
 	void OnMouseDown()
