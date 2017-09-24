@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 
@@ -96,12 +97,19 @@ public class GameController : MonoBehaviour {
 		newNote.GetComponent<Note>().Initialize(bottom, scrollSpeed);
 	}
 
+	static void fail()
+	{
+		SceneManager.LoadScene ("Results");
+	}
+
 	public static void updateHealth(int delta)
 	{
 		health += delta;
 		if (health > 100)
 			health = 100;
-		if (health < 0)
+		if (health <= 0) {
 			health = 0;
+			fail ();
+		}
 	}
 }
