@@ -20,6 +20,7 @@ public class GameController : MonoBehaviour {
 
 	void Start()
 	{
+		PlayerStats.initialize ();
 		Screen.SetResolution (800, 1280, false);
 		score = 0;
 		health = 100;
@@ -99,6 +100,7 @@ public class GameController : MonoBehaviour {
 
 	static void fail()
 	{
+		PlayerStats.score = score;
 		SceneManager.LoadScene ("Results");
 	}
 
