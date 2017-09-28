@@ -9,10 +9,11 @@ public class GameController : MonoBehaviour {
 	public static double score;
 	public static int health;
 	public static int combo;
-	public static int bpm;
+	public static float bpm;
 	public static float scrollSpeed;
 	public static string judge;
-	public Text scoreText, healthText, comboText, bpmText, timingText;
+	public static Song currentSong;
+	public Text scoreText, healthText, comboText, bpmText, timingText, titleText, artistText;
 	public Slider healthSlider;
 
 	public GameObject topLeft, topRight, bottom;
@@ -21,11 +22,18 @@ public class GameController : MonoBehaviour {
 	void Start()
 	{
 		Screen.SetResolution (800, 1280, false);
+
+		SongParser parsetest = new SongParser ();
+		currentSong = parsetest.parse ("Assets/Simfiles/50 Ways To Say Goodbye.sm");
+
 		score = 0;
 		health = 100;
 		combo = 0;
 		scrollSpeed = 1f;
-		bpm = 90;
+		bpm = currentSong.bpm;
+		bpmText.text = bpm.ToString ();
+		artistText.text = currentSong.artist;
+		titleText.text = currentSong.title;
 		judge = "";
 	}
 
@@ -34,7 +42,6 @@ public class GameController : MonoBehaviour {
 		scoreText.text = score.ToString ();
 		healthText.text = health.ToString ();
 		comboText.text = combo.ToString ();
-		bpmText.text = bpm.ToString ();
 		healthSlider.value = health;
 		timingText.text = judge;
 
