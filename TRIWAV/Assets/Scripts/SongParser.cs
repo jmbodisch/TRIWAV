@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System;
 using System.IO;
+using UnityEngine;
 
 public struct noteSpawn {
 	float time;
@@ -19,5 +20,17 @@ public class Song {
 }
 
 public class SongParser {
+	public Song parse(string link)
+	{
+		Song result = new Song();
 
+		StreamReader file = new StreamReader (link);
+		string line;
+		while ((line = file.ReadLine ()) != null && line [0] == '#') {
+			string flag = line.Substring (0, line.IndexOf (':'));
+			Debug.Log (flag);
+		}
+
+		return result;
+	}
 }

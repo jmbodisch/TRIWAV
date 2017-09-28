@@ -27,6 +27,9 @@ public class GameController : MonoBehaviour {
 		scrollSpeed = 1f;
 		bpm = 90;
 		judge = "";
+
+		SongParser parsetest = new SongParser ();
+		parsetest.parse ("Assets/Simfiles/50 Ways To Say Goodbye.sm");
 	}
 
 	void Update()
