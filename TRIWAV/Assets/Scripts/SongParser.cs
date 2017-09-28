@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using UnityEngine;
+using System.Globalization;
 
 public struct noteSpawn {
 	float time;
@@ -27,8 +28,19 @@ public class SongParser {
 		StreamReader file = new StreamReader (link);
 		string line;
 		while ((line = file.ReadLine ()) != null && line [0] == '#') {
-			string flag = line.Substring (0, line.IndexOf (':'));
-			Debug.Log (flag);
+			string[] split = line.Split (':');
+			string flag = split [0];
+
+			if (flag == "#TITLE")
+				result.title = split [1].TrimEnd (';');
+			if (flag == "#ARTIST")
+				result.artist = split [1].TrimEnd (';');
+			if (flag == "#BPMS")
+				result.bpm = float.Parse(split [1].Substring (split [1].IndexOf ('=') + 1), CultureInfo.InvariantCulture.NumberFormat);
+			if (flag == "#OFFSET")
+				result.offset = float.Parse(split [1].TrimEnd (';'), CultureInfo.InvariantCulture.NumberFormat);
+			if (flag == "#MUSIC")
+				result.music = split [1].TrimEnd (';');
 		}
 
 		return result;
