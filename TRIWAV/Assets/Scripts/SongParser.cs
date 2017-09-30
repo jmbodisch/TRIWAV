@@ -9,6 +9,11 @@ public struct noteSpawn {
 	string type;
 }
 
+public struct BPM {
+	float time;
+	float value;
+}
+
 public class Song {
 	public float bpm;
 	public string title;
