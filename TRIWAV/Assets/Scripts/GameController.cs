@@ -24,13 +24,13 @@ public class GameController : MonoBehaviour {
 		Screen.SetResolution (800, 1280, false);
 
 		SongParser parsetest = new SongParser ();
-		currentSong = parsetest.parse ("Assets/Simfiles/50 Ways To Say Goodbye.sm");
+		currentSong = parsetest.parse ("Assets/Simfiles/Kung Fu Beat.sm");
 
 		score = 0;
 		health = 100;
 		combo = 0;
 		scrollSpeed = 1f;
-		bpm = currentSong.bpm;
+		bpm = currentSong.bpms[0].value;
 		bpmText.text = bpm.ToString ();
 		artistText.text = currentSong.artist;
 		titleText.text = currentSong.title;
