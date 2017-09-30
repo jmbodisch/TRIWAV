@@ -10,19 +10,24 @@ public struct noteSpawn {
 }
 
 public struct BPM {
-	float time;
-	float value;
+	public float time;
+	public float value;
+
+	public BPM (float v, float t) {
+		value = v;
+		time = t;
+	}
 }
 
 public class Song {
-	public float bpm;
+	public List<BPM> bpms = new List<BPM>();
 	public string title;
 	public string artist;
 	public string music;
 	public float offset;
-	public List<noteSpawn> topLeftNotes;
-	public List<noteSpawn> topRightNotes;
-	public List<noteSpawn> bottomNotes;
+	public List<noteSpawn> topLeftNotes = new List<noteSpawn>();
+	public List<noteSpawn> topRightNotes = new List<noteSpawn>();
+	public List<noteSpawn> bottomNotes = new List<noteSpawn>();
 }
 
 public class SongParser {
@@ -40,8 +45,20 @@ public class SongParser {
 				result.title = split [1].TrimEnd (';');
 			if (flag == "#ARTIST")
 				result.artist = split [1].TrimEnd (';');
-			if (flag == "#BPMS")
-				result.bpm = float.Parse(split [1].Substring (split [1].IndexOf ('=') + 1), CultureInfo.InvariantCulture.NumberFormat);
+			if (flag == "#BPMS") {
+
+				string bpms = split [1].TrimEnd(';');
+				string[] pairs = bpms.Split (',');
+
+				for (int i = 0; i < pairs.Length; i++) {
+					string[] sides = pairs [i].Split ('=');
+					//Debug.Log ($"{sides[1]} at {sides[0]}");
+					float thisbpm = float.Parse(sides [1], CultureInfo.InvariantCulture.NumberFormat);
+					float thistime = float.Parse(sides [0], CultureInfo.InvariantCulture.NumberFormat);
+					BPM newbpm = new BPM (thisbpm, thistime);
+					result.bpms.Add (newbpm);
+				}
+			 }
 			if (flag == "#OFFSET")
 				result.offset = float.Parse(split [1].TrimEnd (';'), CultureInfo.InvariantCulture.NumberFormat);
 			if (flag == "#MUSIC")
