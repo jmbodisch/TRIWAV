@@ -43,7 +43,7 @@ public class SongParser {
 
 		StreamReader file = new StreamReader (link);
 		string line;
-		while ((line = file.ReadLine ()) != null && line [0] == '#') {
+		while ((line = file.ReadLine ()) != null) {
 			string[] split = line.Split (':');
 			string flag = split [0];
 
