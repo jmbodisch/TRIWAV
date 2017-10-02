@@ -19,15 +19,21 @@ public struct BPM {
 	}
 }
 
+public struct Chart {
+	public int rating;
+	public string difficulty;
+	public List<noteSpawn> topLeftNotes;
+	public List<noteSpawn> topRightNotes;
+	public List<noteSpawn> bottomNotes;
+}
+
 public class Song {
 	public List<BPM> bpms = new List<BPM>();
 	public string title;
 	public string artist;
 	public string music;
 	public float offset;
-	public List<noteSpawn> topLeftNotes = new List<noteSpawn>();
-	public List<noteSpawn> topRightNotes = new List<noteSpawn>();
-	public List<noteSpawn> bottomNotes = new List<noteSpawn>();
+	public List<Chart> charts = new List<Chart>();
 }
 
 public class SongParser {
