@@ -69,6 +69,16 @@ public class SongParser {
 				result.offset = float.Parse(split [1].TrimEnd (';'), CultureInfo.InvariantCulture.NumberFormat);
 			if (flag == "#MUSIC")
 				result.music = split [1].TrimEnd (';');
+			if (flag == "#NOTES") {
+				Chart thisChart = new Chart ();
+				file.ReadLine (); //dance-single
+				file.ReadLine(); //chart artist
+				thisChart.difficulty = file.ReadLine().TrimEnd(':'); //Hard
+				thisChart.rating = int.Parse(file.ReadLine().TrimEnd(':')); //18
+
+				Debug.Log ($"{thisChart.difficulty}, level {thisChart.rating}");
+				result.charts.Add (thisChart);
+			}
 		}
 
 		return result;
