@@ -29,10 +29,10 @@ public struct Chart {
 
 public class Song {
 	public List<BPM> bpms = new List<BPM>();
-	public string title;
-	public string artist;
-	public string music;
-	public float offset;
+	public string title = "";
+	public string artist = "";
+	public string music = "";
+	public float offset = 0f;
 	public List<Chart> charts = new List<Chart>();
 }
 
