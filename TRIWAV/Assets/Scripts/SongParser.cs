@@ -71,6 +71,7 @@ public class SongParser {
 				result.music = split [1].TrimEnd (';');
 			if (flag == "#NOTES") {
 				Chart thisChart = new Chart ();
+				float currentTime = result.offset; //This will be used to determine the time for each note
 				file.ReadLine (); //dance-single
 				file.ReadLine(); //chart artist
 				thisChart.difficulty = file.ReadLine().TrimEnd(':'); //Hard
