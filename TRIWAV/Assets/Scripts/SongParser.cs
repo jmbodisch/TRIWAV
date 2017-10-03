@@ -83,14 +83,30 @@ public class SongParser {
 				//Get rid of any leading whitespace
 				while (lineOfChart == null)
 					lineOfChart = file.ReadLine ();
-
+				
 				int measureCounter = 0;
+				List<string> notesInMeasure = new List<string> ();
 				while (lineOfChart[0] != ';') {
-					measureCounter++;
 					if (lineOfChart [0] == ',') {
-						Debug.Log (measureCounter);
+						//End of Measure, calculate note times&types and add to chart
+						for (int i = 0; i < notesInMeasure; i++) {
+							/*
+							   Todo: the code that creates noteSpawn structs and pushes them
+							   to the list of notes for the chart. Adding a note will involve
+							   calculating the amount of time past the current time (using BPM
+							   and amount of notes in measure). Make sure to advance currentTime
+							   while adding notes.
+							*/
+						}
+
+						//Clean up measure variables
+						notesInMeasure.Clear();
 						measureCounter = 0;
-					} 
+					} else if (lineOfChart[0] != ' '){
+						//just read a note, save the note string and keep counting.
+						notesInMeasure.Add(lineOfChart);
+						measureCounter++;
+					}
 					lineOfChart = file.ReadLine ();
 				}
 
