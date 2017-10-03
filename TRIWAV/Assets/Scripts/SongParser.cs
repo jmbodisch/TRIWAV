@@ -76,6 +76,23 @@ public class SongParser {
 				thisChart.difficulty = file.ReadLine().TrimEnd(':'); //Hard
 				thisChart.rating = int.Parse(file.ReadLine().TrimEnd(':')); //18
 
+				//Start to parse the lines of the chart
+
+				string lineOfChart = file.ReadLine ();
+				//Get rid of any leading whitespace
+				while (lineOfChart == null)
+					lineOfChart = file.ReadLine ();
+
+				int measureCounter = 0;
+				while (lineOfChart[0] != ';') {
+					measureCounter++;
+					if (lineOfChart [0] == ',') {
+						Debug.Log (measureCounter);
+						measureCounter = 0;
+					} 
+					lineOfChart = file.ReadLine ();
+				}
+
 				Debug.Log ($"{thisChart.difficulty}, level {thisChart.rating}");
 				result.charts.Add (thisChart);
 			}
