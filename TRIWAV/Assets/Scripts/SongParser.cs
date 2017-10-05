@@ -97,7 +97,7 @@ public class SongParser {
 				while (lineOfChart[0] != ';') {
 					if (lineOfChart [0] == ',') {
 						//End of Measure, calculate note times&types and add to chart
-						for (int i = 0; i < notesInMeasure; i++) {
+						for (int i = 0; i < notesInMeasure.Count; i++) {
 							/*
 							   Todo: the code that creates noteSpawn structs and pushes them
 							   to the list of notes for the chart. Adding a note will involve
