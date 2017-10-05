@@ -5,8 +5,13 @@ using UnityEngine;
 using System.Globalization;
 
 public struct noteSpawn {
-	float time;
-	string type;
+	public float time;
+	public string type;
+
+	public noteSpawn(float t, string s) {
+		time = t;
+		type = s;
+	}
 }
 
 public struct BPM {
