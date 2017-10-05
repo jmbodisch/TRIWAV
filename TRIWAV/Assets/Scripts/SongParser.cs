@@ -71,6 +71,9 @@ public class SongParser {
 				result.music = split [1].TrimEnd (';');
 			if (flag == "#NOTES") {
 				Chart thisChart = new Chart ();
+				thisChart.topLeftNotes = new List<noteSpawn> ();
+				thisChart.bottomNotes = new List<noteSpawn> ();
+				thisChart.topRightNotes = new List<noteSpawn> ();
 				float currentTime = result.offset; //This will be used to determine the time for each note
 				file.ReadLine (); //dance-single
 				file.ReadLine(); //chart artist
@@ -97,6 +100,15 @@ public class SongParser {
 							   and amount of notes in measure). Make sure to advance currentTime
 							   while adding notes.
 							*/
+
+							float step = (result.bpms [0].value / 4 * notesInMeasure.Count / 60); //seconds per note
+							currentTime += step;
+							if (notesInMeasure[0] [0] == '1')
+								thisChart.topLeftNotes.Add (new noteSpawn (currentTime, "tap"));
+							if (notesInMeasure[0] [1] == '1')
+								thisChart.bottomNotes.Add (new noteSpawn (currentTime, "tap"));
+							if (notesInMeasure[0] [2] == '1')
+								thisChart.topRightNotes.Add (new noteSpawn (currentTime, "tap"));
 						}
 
 						//Clean up measure variables
