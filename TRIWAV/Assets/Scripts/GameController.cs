@@ -28,6 +28,7 @@ public class GameController : MonoBehaviour {
 		enabled = false;
 		currentSong = parsetest.parse ("Assets/Simfiles/50 Ways To Say Goodbye.sm");
 		currentChart = currentSong.charts [0];
+		Debug.Log (currentSong.offset);
 		enabled = true;
 		score = 0;
 		health = 100;
@@ -47,17 +48,7 @@ public class GameController : MonoBehaviour {
 		healthText.text = health.ToString ();
 		comboText.text = combo.ToString ();
 		healthSlider.value = health;
-		timingText.text = judge;
-
-		if (Time.timeSinceLevelLoad > currentChart.topLeftNotes [0].time) {
-			makeTopLeft ();
-		}
-		if (Time.timeSinceLevelLoad > currentChart.bottomNotes [0].time) {
-			makeBottom();
-		}
-		if (Time.timeSinceLevelLoad > currentChart.topRightNotes [0].time) {
-			makeTopRight ();
-		}
+		timingText.text = Time.timeSinceLevelLoad.ToString();
 
 		//Keyboard handlers
 		if(Input.GetKeyDown (KeyCode.A))
