@@ -98,6 +98,9 @@ public class SongParser {
 					if (lineOfChart [0] == ',') {
 						//End of Measure, calculate note times&types and add to chart
 						Debug.Log ($"Measure has {notesInMeasure.Count} subdivisions.");
+						//calculate what a step should be.
+						//a step is the amount of time it takes for one subdivision of the measure.
+						float step = (1 / (result.bpms[0].value / 15) / notesInMeasure.Count);
 						for (int i = 0; i < notesInMeasure.Count; i++) {
 							/*
 							   Todo: the code that creates noteSpawn structs and pushes them
@@ -106,15 +109,26 @@ public class SongParser {
 							   and amount of notes in measure). Make sure to advance currentTime
 							   while adding notes.
 							*/
+
+							//advance the time of the song by one step
+							currentTime += step;
+							Debug.Log ($"Current time is {currentTime}");
+
 							string lineNote = "";
 							if (notesInMeasure [i] [0] == '1') {
+								//add a top left note at the current time
 								lineNote += "topleft ";
+								thisChart.topLeftNotes.Add (new noteSpawn (currentTime, "tap"));
 							}
 							if (notesInMeasure [i] [1] == '1') {
+								//add a bottom note at the current time
 								lineNote += "bottom ";
+								thisChart.bottomNotes.Add (new noteSpawn (currentTime, "tap"));
 							}
 							if (notesInMeasure [i] [2] == '1') {
+								//add a top right note at the current time
 								lineNote += "topright";
+								thisChart.topRightNotes.Add (new noteSpawn (currentTime, "tap"));
 							}
 
 							Debug.Log ("this note is : " + lineNote);

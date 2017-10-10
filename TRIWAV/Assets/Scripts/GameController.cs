@@ -50,6 +50,17 @@ public class GameController : MonoBehaviour {
 		healthSlider.value = health;
 		timingText.text = Time.timeSinceLevelLoad.ToString();
 
+
+
+		//check for any notes to have been triggered
+		if (currentChart.topLeftNotes [0].time <= Time.timeSinceLevelLoad) {
+			makeTopLeft ();
+			Debug.Log ("Make a note at: " + currentChart.topLeftNotes[0].time.ToString());
+			currentChart.topLeftNotes.RemoveAt (0);
+		}
+
+
+
 		//Keyboard handlers
 		if(Input.GetKeyDown (KeyCode.A))
 			makeTopLeft ();
