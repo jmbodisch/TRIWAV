@@ -13,6 +13,7 @@ public class GameController : MonoBehaviour {
 	public static float scrollSpeed;
 	public static string judge;
 	public static Song currentSong;
+	public static Chart currentChart;
 	public Text scoreText, healthText, comboText, bpmText, timingText, titleText, artistText;
 	public Slider healthSlider;
 
@@ -24,13 +25,17 @@ public class GameController : MonoBehaviour {
 		Screen.SetResolution (800, 1280, false);
 
 		SongParser parsetest = new SongParser ();
-		currentSong = parsetest.parse ("Assets/Simfiles/Kung Fu Beat.sm");
-
+		enabled = false;
+		currentSong = parsetest.parse ("Assets/Simfiles/50 Ways To Say Goodbye.sm");
+		currentChart = currentSong.charts [0];
+		Debug.Log (currentSong.offset);
+		enabled = true;
 		score = 0;
 		health = 100;
 		combo = 0;
 		scrollSpeed = 1f;
 		bpm = currentSong.bpms[0].value;
+		currentChart = currentSong.charts [0];
 		bpmText.text = bpm.ToString ();
 		artistText.text = currentSong.artist;
 		titleText.text = currentSong.title;
@@ -43,7 +48,29 @@ public class GameController : MonoBehaviour {
 		healthText.text = health.ToString ();
 		comboText.text = combo.ToString ();
 		healthSlider.value = health;
-		timingText.text = judge;
+		timingText.text = Time.timeSinceLevelLoad.ToString();
+
+
+
+		//check for any notes to have been triggered
+		if (currentChart.topLeftNotes [0].time <= Time.timeSinceLevelLoad) {
+			makeTopLeft ();
+			//Debug.Log ("Make a note at: " + currentChart.topLeftNotes[0].time.ToString());
+			currentChart.topLeftNotes.RemoveAt (0);
+		}
+
+		if (currentChart.bottomNotes [0].time <= Time.timeSinceLevelLoad) {
+			makeBottom ();
+			//Debug.Log ("Make a note at: " + currentChart.topLeftNotes[0].time.ToString());
+			currentChart.bottomNotes.RemoveAt (0);
+		}
+
+		if (currentChart.topRightNotes [0].time <= Time.timeSinceLevelLoad) {
+			makeTopRight ();
+			//Debug.Log ("Make a note at: " + currentChart.topLeftNotes[0].time.ToString());
+			currentChart.topRightNotes.RemoveAt (0);
+		}
+
 
 		//Keyboard handlers
 		if(Input.GetKeyDown (KeyCode.A))
