@@ -55,10 +55,21 @@ public class GameController : MonoBehaviour {
 		//check for any notes to have been triggered
 		if (currentChart.topLeftNotes [0].time <= Time.timeSinceLevelLoad) {
 			makeTopLeft ();
-			Debug.Log ("Make a note at: " + currentChart.topLeftNotes[0].time.ToString());
+			//Debug.Log ("Make a note at: " + currentChart.topLeftNotes[0].time.ToString());
 			currentChart.topLeftNotes.RemoveAt (0);
 		}
 
+		if (currentChart.bottomNotes [0].time <= Time.timeSinceLevelLoad) {
+			makeBottom ();
+			//Debug.Log ("Make a note at: " + currentChart.topLeftNotes[0].time.ToString());
+			currentChart.bottomNotes.RemoveAt (0);
+		}
+
+		if (currentChart.topRightNotes [0].time <= Time.timeSinceLevelLoad) {
+			makeTopRight ();
+			//Debug.Log ("Make a note at: " + currentChart.topLeftNotes[0].time.ToString());
+			currentChart.topRightNotes.RemoveAt (0);
+		}
 
 
 		//Keyboard handlers
