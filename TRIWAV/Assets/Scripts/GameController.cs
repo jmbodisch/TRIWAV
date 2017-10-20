@@ -16,6 +16,7 @@ public class GameController : MonoBehaviour {
 	public static Chart currentChart;
 	public Text scoreText, healthText, comboText, bpmText, timingText, titleText, artistText;
 	public Slider healthSlider;
+	private int bpmIndex = 0;
 
 	public GameObject topLeft, topRight, bottom;
 	public GameObject note, swipe;
@@ -26,7 +27,7 @@ public class GameController : MonoBehaviour {
 
 		SongParser parsetest = new SongParser ();
 		enabled = false;
-		currentSong = parsetest.parse ("Assets/Simfiles/50 Ways To Say Goodbye.sm");
+		currentSong = parsetest.parse ("Assets/Simfiles/Kung Fu Beat.sm");
 		currentChart = currentSong.charts [0];
 		Debug.Log (currentSong.offset);
 		enabled = true;
@@ -34,9 +35,9 @@ public class GameController : MonoBehaviour {
 		health = 100;
 		combo = 0;
 		scrollSpeed = 1f;
-		bpm = currentSong.bpms[0].value;
+
+		bpm = currentSong.bpms[bpmIndex].value;
 		currentChart = currentSong.charts [0];
-		bpmText.text = bpm.ToString ();
 		artistText.text = currentSong.artist;
 		titleText.text = currentSong.title;
 		judge = "";
@@ -47,11 +48,17 @@ public class GameController : MonoBehaviour {
 		scoreText.text = score.ToString ();
 		healthText.text = health.ToString ();
 		comboText.text = combo.ToString ();
+		bpmText.text = bpm.ToString ();
 		healthSlider.value = health;
 		timingText.text = Time.timeSinceLevelLoad.ToString();
 
-
-
+		//Check for BPM changes
+		if (bpmIndex + 1 < currentSong.bpms.Count) {
+			if (currentSong.bpms [bpmIndex+1].time <= Time.timeSinceLevelLoad) {
+				bpmIndex++;
+				bpm = currentSong.bpms [bpmIndex].value;
+			}
+		}
 		//check for any notes to have been triggered
 		if ((currentChart.topLeftNotes [0].time - scrollSpeed) <= Time.timeSinceLevelLoad) {
 			makeTopLeft ();

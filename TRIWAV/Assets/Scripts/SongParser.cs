@@ -102,8 +102,10 @@ public class SongParser {
 						Debug.Log ($"Measure has {notesInMeasure.Count} subdivisions.");
 
 						//Before determining any note times, check if BPM has changed.
-						if (currentTime >= result.bpms [currentBpm + 1].time) {
-							currentBpm++;
+						if (currentBpm + 1 < result.bpms.Count) {
+							if (currentTime >= result.bpms [currentBpm + 1].time) {
+								currentBpm++;
+							}
 						}
 
 						//calculate what a step should be.
