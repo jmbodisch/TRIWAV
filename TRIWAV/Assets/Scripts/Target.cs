@@ -39,6 +39,7 @@ public class Target : MonoBehaviour {
 	{
 		press();
 		touchPosition = Input.mousePosition;
+		gameObject.GetComponent<SpriteRenderer> ().color = Color.blue;
 		beingTouched = true;
 	}
 
@@ -49,6 +50,7 @@ public class Target : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (Input.GetMouseButtonUp (0)) {
+			gameObject.GetComponent<SpriteRenderer> ().color = Color.white;
 			Vector2 deltaSwipe = touchPosition - Input.mousePosition;
 			if ((Mathf.Abs(deltaSwipe.magnitude) > swipeResistance) && beingTouched) {
 				swipe ();
