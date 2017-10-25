@@ -79,9 +79,8 @@ public class SongParser {
 				thisChart.topLeftNotes = new List<noteSpawn> ();
 				thisChart.bottomNotes = new List<noteSpawn> ();
 				thisChart.topRightNotes = new List<noteSpawn> ();
+				int currentBpm = 0; //This will be the index of the BPM currently being used to determine note times.
 
-				//calculate seconds per measure
-				float secPerMeasure = 240/result.bpms[0].value;
 				float currentTime = result.offset; //This will be used to determine the time for each note
 				file.ReadLine (); //dance-single
 				file.ReadLine(); //chart artist
@@ -101,7 +100,18 @@ public class SongParser {
 					if (lineOfChart [0] == ',') {
 						//End of Measure, calculate note times&types and add to chart
 						Debug.Log ($"Measure has {notesInMeasure.Count} subdivisions.");
+
+						//Before determining any note times, check if BPM has changed.
+						if (currentBpm + 1 < result.bpms.Count) {
+							if (currentTime >= result.bpms [currentBpm + 1].time) {
+								currentBpm++;
+							}
+						}
+
 						//calculate what a step should be.
+
+						//calculate seconds per measure
+						float secPerMeasure = 240/result.bpms[currentBpm].value;
 						//a step is the amount of time it takes for one subdivision of the measure.
 						float step = secPerMeasure / notesInMeasure.Count;
 						Debug.Log ($"Step is {step}.");
