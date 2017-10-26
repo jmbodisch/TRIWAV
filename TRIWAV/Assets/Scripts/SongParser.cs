@@ -14,12 +14,16 @@ public struct noteSpawn {
 	}
 }
 
-public struct BPM {
-	public float time;
+public class BPM {
+	public float time, beat;
 	public float value;
 
-	public BPM (float v, float t) {
+	public BPM (float v, float b) {
 		value = v;
+		beat = b;
+		time = 0;
+	}
+	public void setTime(float t){
 		time = t;
 	}
 }
@@ -65,8 +69,8 @@ public class SongParser {
 					string[] sides = pairs [i].Split ('=');
 					//Debug.Log ($"{sides[1]} at {sides[0]}");
 					float thisbpm = float.Parse(sides [1], CultureInfo.InvariantCulture.NumberFormat);
-					float thistime = float.Parse(sides [0], CultureInfo.InvariantCulture.NumberFormat);
-					BPM newbpm = new BPM (thisbpm, thistime);
+					float thisbeat = float.Parse(sides [0], CultureInfo.InvariantCulture.NumberFormat);
+					BPM newbpm = new BPM (thisbpm, thisbeat);
 					result.bpms.Add (newbpm);
 				}
 			 }
@@ -95,15 +99,18 @@ public class SongParser {
 					lineOfChart = file.ReadLine ();
 				
 				int measureCounter = 0;
+				float beatCounter = 0;
 				List<string> notesInMeasure = new List<string> ();
 				while (lineOfChart[0] != ';') {
 					if (lineOfChart [0] == ',') {
 						//End of Measure, calculate note times&types and add to chart
-						Debug.Log ($"Measure has {notesInMeasure.Count} subdivisions.");
-
+						//Debug.Log ($"Measure has {notesInMeasure.Count} subdivisions.");
+						//Debug.Log (beatCounter);
 						//Before determining any note times, check if BPM has changed.
 						if (currentBpm + 1 < result.bpms.Count) {
-							if (currentTime >= result.bpms [currentBpm + 1].time) {
+							if (beatCounter >= result.bpms [currentBpm + 1].beat) {
+								result.bpms [currentBpm].time = currentTime;
+
 								currentBpm++;
 							}
 						}
@@ -114,7 +121,7 @@ public class SongParser {
 						float secPerMeasure = 240/result.bpms[currentBpm].value;
 						//a step is the amount of time it takes for one subdivision of the measure.
 						float step = secPerMeasure / notesInMeasure.Count;
-						Debug.Log ($"Step is {step}.");
+						//Debug.Log ($"Step is {step}.");
 						for (int i = 0; i < notesInMeasure.Count; i++) {
 							/*
 							   Todo: the code that creates noteSpawn structs and pushes them
@@ -126,6 +133,8 @@ public class SongParser {
 
 							//advance the time of the song by one step
 							currentTime += step;
+							//advance beat
+							beatCounter += (float)(4/(float)notesInMeasure.Count);
 							//Debug.Log ($"Current time is {currentTime}");
 
 							string lineNote = "";
@@ -159,7 +168,7 @@ public class SongParser {
 					lineOfChart = file.ReadLine ();
 				}
 
-				Debug.Log ($"{thisChart.difficulty}, level {thisChart.rating}");
+				//Debug.Log ($"{thisChart.difficulty}, level {thisChart.rating}");
 				result.charts.Add (thisChart);
 			}
 		}

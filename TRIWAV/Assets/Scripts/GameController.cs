@@ -29,7 +29,7 @@ public class GameController : MonoBehaviour {
 		enabled = false;
 		currentSong = parsetest.parse ("Assets/Simfiles/Kung Fu Beat.sm");
 		currentChart = currentSong.charts [0];
-		Debug.Log (currentSong.offset);
+		//Debug.Log (currentSong.offset);
 		enabled = true;
 		score = 0;
 		health = 100;
@@ -41,6 +41,10 @@ public class GameController : MonoBehaviour {
 		artistText.text = currentSong.artist;
 		titleText.text = currentSong.title;
 		judge = "";
+
+		for (int i = 0; i < currentSong.bpms.Count; i++) {
+			Debug.Log ($"{currentSong.bpms[i].value} at {currentSong.bpms [i].time}");
+		}
 	}
 
 	void Update()
@@ -59,20 +63,21 @@ public class GameController : MonoBehaviour {
 				bpm = currentSong.bpms [bpmIndex].value;
 			}
 		}
+		
 		//check for any notes to have been triggered
-		if ((currentChart.topLeftNotes [0].time - scrollSpeed) <= Time.timeSinceLevelLoad) {
+		if (currentChart.topLeftNotes.Count > 0 && (currentChart.topLeftNotes [0].time - scrollSpeed) <= Time.timeSinceLevelLoad) {
 			makeTopLeft ();
 			//Debug.Log ("Make a note at: " + currentChart.topLeftNotes[0].time.ToString());
 			currentChart.topLeftNotes.RemoveAt (0);
 		}
 
-		if ((currentChart.bottomNotes [0].time - scrollSpeed) <= Time.timeSinceLevelLoad) {
+		if (currentChart.bottomNotes.Count > 0 && (currentChart.bottomNotes [0].time - scrollSpeed) <= Time.timeSinceLevelLoad) {
 			makeBottom ();
 			//Debug.Log ("Make a note at: " + currentChart.topLeftNotes[0].time.ToString());
 			currentChart.bottomNotes.RemoveAt (0);
 		}
 
-		if ((currentChart.topRightNotes [0].time - scrollSpeed) <= Time.timeSinceLevelLoad) {
+		if (currentChart.topRightNotes.Count > 0 && (currentChart.topRightNotes [0].time - scrollSpeed) <= Time.timeSinceLevelLoad) {
 			makeTopRight ();
 			//Debug.Log ("Make a note at: " + currentChart.topLeftNotes[0].time.ToString());
 			currentChart.topRightNotes.RemoveAt (0);
