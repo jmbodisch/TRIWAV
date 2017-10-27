@@ -56,6 +56,14 @@ public class GameController : MonoBehaviour {
 		healthSlider.value = health;
 		timingText.text = Time.timeSinceLevelLoad.ToString();
 
+		/*TODO: ADD TRACKER FOR CURRENT BEAT
+		 * 
+		 * BEAT TIMING WILL MAKE THINGS SO MUCH EASIER. TRACK THE BEAT USING THE BPM AND
+		 * THE AMOUNT OF TIME THAT HAS PASSED. MAKE SURE TO ACCOUNT FOR BPM CHANGES.
+		 * 
+		 * ALSO, DON'T FORGET OFFSET.*/
+
+
 		//Check for BPM changes
 		if (bpmIndex + 1 < currentSong.bpms.Count) {
 			if (currentSong.bpms [bpmIndex+1].time <= Time.timeSinceLevelLoad) {
