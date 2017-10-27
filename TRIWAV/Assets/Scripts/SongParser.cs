@@ -5,26 +5,22 @@ using UnityEngine;
 using System.Globalization;
 
 public struct noteSpawn {
-	public float time;
+	public float beat;
 	public string type;
 
-	public noteSpawn(float t, string s) {
-		time = t;
+	public noteSpawn(float b, string s) {
+		beat = t;
 		type = s;
 	}
 }
 
 public class BPM {
-	public float time, beat;
+	public float beat;
 	public float value;
 
 	public BPM (float v, float b) {
 		value = v;
 		beat = b;
-		time = 0;
-	}
-	public void setTime(float t){
-		time = t;
 	}
 }
 
@@ -109,18 +105,10 @@ public class SongParser {
 						//Before determining any note times, check if BPM has changed.
 						if (currentBpm + 1 < result.bpms.Count) {
 							if (beatCounter >= result.bpms [currentBpm + 1].beat) {
-								result.bpms [currentBpm].time = currentTime;
-
 								currentBpm++;
 							}
 						}
-
-						//calculate what a step should be.
-
-						//calculate seconds per measure
-						float secPerMeasure = 240/result.bpms[currentBpm].value;
-						//a step is the amount of time it takes for one subdivision of the measure.
-						float step = secPerMeasure / notesInMeasure.Count;
+							
 						//Debug.Log ($"Step is {step}.");
 						for (int i = 0; i < notesInMeasure.Count; i++) {
 							/*
@@ -130,9 +118,6 @@ public class SongParser {
 							   and amount of notes in measure). Make sure to advance currentTime
 							   while adding notes.
 							*/
-
-							//advance the time of the song by one step
-							currentTime += step;
 							//advance beat
 							beatCounter += (float)(4/(float)notesInMeasure.Count);
 							//Debug.Log ($"Current time is {currentTime}");
@@ -141,17 +126,17 @@ public class SongParser {
 							if (notesInMeasure [i] [0] == '1') {
 								//add a top left note at the current time
 								lineNote += "topleft ";
-								thisChart.topLeftNotes.Add (new noteSpawn (currentTime, "tap"));
+								thisChart.topLeftNotes.Add (new noteSpawn (beatCounter, "tap"));
 							}
 							if (notesInMeasure [i] [1] == '1') {
 								//add a bottom note at the current time
 								lineNote += "bottom ";
-								thisChart.bottomNotes.Add (new noteSpawn (currentTime, "tap"));
+								thisChart.bottomNotes.Add (new noteSpawn (beatCounter, "tap"));
 							}
 							if (notesInMeasure [i] [2] == '1') {
 								//add a top right note at the current time
 								lineNote += "topright";
-								thisChart.topRightNotes.Add (new noteSpawn (currentTime, "tap"));
+								thisChart.topRightNotes.Add (new noteSpawn (beatCounter, "tap"));
 							}
 
 							//Debug.Log ("this note is : " + lineNote);
