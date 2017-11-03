@@ -9,25 +9,43 @@ public class GameController : MonoBehaviour {
 	public static double score;
 	public static int health;
 	public static int combo;
-	public static int bpm;
+	public static float bpm;
 	public static float scrollSpeed;
 	public static string judge;
-	public Text scoreText, healthText, comboText, bpmText, timingText;
+	public static Song currentSong;
+	public static Chart currentChart;
+	public Text scoreText, healthText, comboText, bpmText, timingText, titleText, artistText;
 	public Slider healthSlider;
+	private int bpmIndex = 0;
+	float currentBeat;
 
 	public GameObject topLeft, topRight, bottom;
 	public GameObject note, swipe;
 
 	void Start()
 	{
-		PlayerStats.initialize ();
 		Screen.SetResolution (800, 1280, false);
+
+		SongParser parsetest = new SongParser ();
+		enabled = false;
+		currentSong = parsetest.parse ("Assets/Simfiles/Kung Fu Beat.sm");
+		currentChart = currentSong.charts [0];
+		//Debug.Log (currentSong.offset);
+		enabled = true;
 		score = 0;
 		health = 100;
 		combo = 0;
 		scrollSpeed = 1f;
-		bpm = 90;
+
+		bpm = currentSong.bpms[bpmIndex].value;
+		currentChart = currentSong.charts [0];
+		artistText.text = currentSong.artist;
+		titleText.text = currentSong.title;
 		judge = "";
+
+		for (int i = 0; i < currentSong.bpms.Count; i++) {
+			//Debug.Log ($"{currentSong.bpms[i].value} at {currentSong.bpms [i].time}");
+		}
 	}
 
 	void Update()
@@ -37,7 +55,45 @@ public class GameController : MonoBehaviour {
 		comboText.text = combo.ToString ();
 		bpmText.text = bpm.ToString ();
 		healthSlider.value = health;
-		timingText.text = judge;
+		//timingText.text = Time.timeSinceLevelLoad.ToString();
+		currentBeat += Time.deltaTime * (bpm / 60);
+		timingText.text = currentBeat.ToString ();
+
+		/*TODO: ADD TRACKER FOR CURRENT BEAT
+		 * 
+		 * BEAT TIMING WILL MAKE THINGS SO MUCH EASIER. TRACK THE BEAT USING THE BPM AND
+		 * THE AMOUNT OF TIME THAT HAS PASSED. MAKE SURE TO ACCOUNT FOR BPM CHANGES.
+		 * 
+		 * ALSO, DON'T FORGET OFFSET.*/
+
+
+		//Check for BPM changes
+		if (bpmIndex + 1 < currentSong.bpms.Count) {
+			if (currentSong.bpms [bpmIndex+1].beat <= currentBeat) {
+				bpmIndex++;
+				bpm = currentSong.bpms [bpmIndex].value;
+			}
+		}
+		
+		//check for any notes to have been triggered
+		if (currentChart.topLeftNotes.Count > 0 && (currentChart.topLeftNotes [0].beat - scrollSpeed) <= currentBeat) {
+			makeTopLeft ();
+			//Debug.Log ("Make a note at: " + currentChart.topLeftNotes[0].time.ToString());
+			currentChart.topLeftNotes.RemoveAt (0);
+		}
+
+		if (currentChart.bottomNotes.Count > 0 && (currentChart.bottomNotes [0].beat - scrollSpeed) <= currentBeat) {
+			makeBottom ();
+			//Debug.Log ("Make a note at: " + currentChart.topLeftNotes[0].time.ToString());
+			currentChart.bottomNotes.RemoveAt (0);
+		}
+
+		if (currentChart.topRightNotes.Count > 0 && (currentChart.topRightNotes [0].beat - scrollSpeed) <= currentBeat) {
+			makeTopRight ();
+			//Debug.Log ("Make a note at: " + currentChart.topLeftNotes[0].time.ToString());
+			currentChart.topRightNotes.RemoveAt (0);
+		}
+
 
 		//Keyboard handlers
 		if(Input.GetKeyDown (KeyCode.A))
@@ -100,7 +156,6 @@ public class GameController : MonoBehaviour {
 
 	static void fail()
 	{
-		PlayerStats.score = score;
 		SceneManager.LoadScene ("Results");
 	}
 

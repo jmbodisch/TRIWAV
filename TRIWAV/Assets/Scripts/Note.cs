@@ -51,26 +51,22 @@ public class Note : MonoBehaviour {
 			GameController.judge = "Perfect";
 			GameController.score += 100;
 			GameController.updateHealth (5);
-			PlayerStats.perfects++;
 			Kill (true);
 		}
 		else if (timing <= Constants.GREAT) { //Great
 			GameController.judge = "Great";
 			GameController.score += 70;
 			GameController.updateHealth (3);
-			PlayerStats.greats++;
 			Kill (true);
 		}
 		else if (timing <= Constants.GOOD) { //Good
 			GameController.judge = "Good";
 			GameController.score += 100;
-			PlayerStats.goods++;
 			Kill (true);
 		} 
 		else if (timing <= Constants.POOR) {//Poor
 			GameController.judge = "Poor";
 			GameController.updateHealth(-4);
-			PlayerStats.poors++;
 			Kill (false);
 		}
 	}
