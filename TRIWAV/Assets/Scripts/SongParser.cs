@@ -5,22 +5,22 @@ using UnityEngine;
 using System.Globalization;
 
 public struct noteSpawn {
-	public float time;
+	public float beat;
 	public string type;
 
-	public noteSpawn(float t, string s) {
-		time = t;
+	public noteSpawn(float b, string s) {
+		beat = b;
 		type = s;
 	}
 }
 
-public struct BPM {
-	public float time;
+public class BPM {
+	public float beat;
 	public float value;
 
-	public BPM (float v, float t) {
+	public BPM (float v, float b) {
 		value = v;
-		time = t;
+		beat = b;
 	}
 }
 
@@ -65,8 +65,8 @@ public class SongParser {
 					string[] sides = pairs [i].Split ('=');
 					//Debug.Log ($"{sides[1]} at {sides[0]}");
 					float thisbpm = float.Parse(sides [1], CultureInfo.InvariantCulture.NumberFormat);
-					float thistime = float.Parse(sides [0], CultureInfo.InvariantCulture.NumberFormat);
-					BPM newbpm = new BPM (thisbpm, thistime);
+					float thisbeat = float.Parse(sides [0], CultureInfo.InvariantCulture.NumberFormat);
+					BPM newbpm = new BPM (thisbpm, thisbeat);
 					result.bpms.Add (newbpm);
 				}
 			 }
@@ -81,7 +81,6 @@ public class SongParser {
 				thisChart.topRightNotes = new List<noteSpawn> ();
 				int currentBpm = 0; //This will be the index of the BPM currently being used to determine note times.
 
-				float currentTime = result.offset; //This will be used to determine the time for each note
 				file.ReadLine (); //dance-single
 				file.ReadLine(); //chart artist
 				thisChart.difficulty = file.ReadLine().TrimEnd(':'); //Hard
@@ -95,26 +94,21 @@ public class SongParser {
 					lineOfChart = file.ReadLine ();
 				
 				int measureCounter = 0;
+				float beatCounter = 0;
 				List<string> notesInMeasure = new List<string> ();
 				while (lineOfChart[0] != ';') {
 					if (lineOfChart [0] == ',') {
 						//End of Measure, calculate note times&types and add to chart
-						Debug.Log ($"Measure has {notesInMeasure.Count} subdivisions.");
-
+						//Debug.Log ($"Measure has {notesInMeasure.Count} subdivisions.");
+						//Debug.Log (beatCounter);
 						//Before determining any note times, check if BPM has changed.
 						if (currentBpm + 1 < result.bpms.Count) {
-							if (currentTime >= result.bpms [currentBpm + 1].time) {
+							if (beatCounter >= result.bpms [currentBpm + 1].beat) {
 								currentBpm++;
 							}
 						}
-
-						//calculate what a step should be.
-
-						//calculate seconds per measure
-						float secPerMeasure = 240/result.bpms[currentBpm].value;
-						//a step is the amount of time it takes for one subdivision of the measure.
-						float step = secPerMeasure / notesInMeasure.Count;
-						Debug.Log ($"Step is {step}.");
+							
+						//Debug.Log ($"Step is {step}.");
 						for (int i = 0; i < notesInMeasure.Count; i++) {
 							/*
 							   Todo: the code that creates noteSpawn structs and pushes them
@@ -123,26 +117,25 @@ public class SongParser {
 							   and amount of notes in measure). Make sure to advance currentTime
 							   while adding notes.
 							*/
-
-							//advance the time of the song by one step
-							currentTime += step;
+							//advance beat
+							beatCounter += (float)(4/(float)notesInMeasure.Count);
 							//Debug.Log ($"Current time is {currentTime}");
 
 							string lineNote = "";
 							if (notesInMeasure [i] [0] == '1') {
 								//add a top left note at the current time
 								lineNote += "topleft ";
-								thisChart.topLeftNotes.Add (new noteSpawn (currentTime, "tap"));
+								thisChart.topLeftNotes.Add (new noteSpawn (beatCounter, "tap"));
 							}
 							if (notesInMeasure [i] [1] == '1') {
 								//add a bottom note at the current time
 								lineNote += "bottom ";
-								thisChart.bottomNotes.Add (new noteSpawn (currentTime, "tap"));
+								thisChart.bottomNotes.Add (new noteSpawn (beatCounter, "tap"));
 							}
 							if (notesInMeasure [i] [2] == '1') {
 								//add a top right note at the current time
 								lineNote += "topright";
-								thisChart.topRightNotes.Add (new noteSpawn (currentTime, "tap"));
+								thisChart.topRightNotes.Add (new noteSpawn (beatCounter, "tap"));
 							}
 
 							//Debug.Log ("this note is : " + lineNote);
@@ -159,7 +152,7 @@ public class SongParser {
 					lineOfChart = file.ReadLine ();
 				}
 
-				Debug.Log ($"{thisChart.difficulty}, level {thisChart.rating}");
+				//Debug.Log ($"{thisChart.difficulty}, level {thisChart.rating}");
 				result.charts.Add (thisChart);
 			}
 		}
