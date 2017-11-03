@@ -9,7 +9,7 @@ public struct noteSpawn {
 	public string type;
 
 	public noteSpawn(float b, string s) {
-		beat = t;
+		beat = b;
 		type = s;
 	}
 }
@@ -81,7 +81,6 @@ public class SongParser {
 				thisChart.topRightNotes = new List<noteSpawn> ();
 				int currentBpm = 0; //This will be the index of the BPM currently being used to determine note times.
 
-				float currentTime = result.offset; //This will be used to determine the time for each note
 				file.ReadLine (); //dance-single
 				file.ReadLine(); //chart artist
 				thisChart.difficulty = file.ReadLine().TrimEnd(':'); //Hard

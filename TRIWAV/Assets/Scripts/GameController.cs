@@ -17,6 +17,7 @@ public class GameController : MonoBehaviour {
 	public Text scoreText, healthText, comboText, bpmText, timingText, titleText, artistText;
 	public Slider healthSlider;
 	private int bpmIndex = 0;
+	float currentBeat;
 
 	public GameObject topLeft, topRight, bottom;
 	public GameObject note, swipe;
@@ -43,7 +44,7 @@ public class GameController : MonoBehaviour {
 		judge = "";
 
 		for (int i = 0; i < currentSong.bpms.Count; i++) {
-			Debug.Log ($"{currentSong.bpms[i].value} at {currentSong.bpms [i].time}");
+			//Debug.Log ($"{currentSong.bpms[i].value} at {currentSong.bpms [i].time}");
 		}
 	}
 
@@ -54,7 +55,9 @@ public class GameController : MonoBehaviour {
 		comboText.text = combo.ToString ();
 		bpmText.text = bpm.ToString ();
 		healthSlider.value = health;
-		timingText.text = Time.timeSinceLevelLoad.ToString();
+		//timingText.text = Time.timeSinceLevelLoad.ToString();
+		currentBeat += Time.deltaTime * (bpm / 60);
+		timingText.text = currentBeat.ToString ();
 
 		/*TODO: ADD TRACKER FOR CURRENT BEAT
 		 * 
@@ -66,26 +69,26 @@ public class GameController : MonoBehaviour {
 
 		//Check for BPM changes
 		if (bpmIndex + 1 < currentSong.bpms.Count) {
-			if (currentSong.bpms [bpmIndex+1].time <= Time.timeSinceLevelLoad) {
+			if (currentSong.bpms [bpmIndex+1].beat <= currentBeat) {
 				bpmIndex++;
 				bpm = currentSong.bpms [bpmIndex].value;
 			}
 		}
 		
 		//check for any notes to have been triggered
-		if (currentChart.topLeftNotes.Count > 0 && (currentChart.topLeftNotes [0].time - scrollSpeed) <= Time.timeSinceLevelLoad) {
+		if (currentChart.topLeftNotes.Count > 0 && (currentChart.topLeftNotes [0].beat - scrollSpeed) <= currentBeat) {
 			makeTopLeft ();
 			//Debug.Log ("Make a note at: " + currentChart.topLeftNotes[0].time.ToString());
 			currentChart.topLeftNotes.RemoveAt (0);
 		}
 
-		if (currentChart.bottomNotes.Count > 0 && (currentChart.bottomNotes [0].time - scrollSpeed) <= Time.timeSinceLevelLoad) {
+		if (currentChart.bottomNotes.Count > 0 && (currentChart.bottomNotes [0].beat - scrollSpeed) <= currentBeat) {
 			makeBottom ();
 			//Debug.Log ("Make a note at: " + currentChart.topLeftNotes[0].time.ToString());
 			currentChart.bottomNotes.RemoveAt (0);
 		}
 
-		if (currentChart.topRightNotes.Count > 0 && (currentChart.topRightNotes [0].time - scrollSpeed) <= Time.timeSinceLevelLoad) {
+		if (currentChart.topRightNotes.Count > 0 && (currentChart.topRightNotes [0].beat - scrollSpeed) <= currentBeat) {
 			makeTopRight ();
 			//Debug.Log ("Make a note at: " + currentChart.topLeftNotes[0].time.ToString());
 			currentChart.topRightNotes.RemoveAt (0);
