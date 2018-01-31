@@ -24,6 +24,16 @@ public class BPM {
 	}
 }
 
+public class Stop {
+	public float beat;
+	public float time;
+
+	public Stop (float b, float t) {
+		beat = b;
+		time = t;
+	}
+}
+
 public struct Chart {
 	public int rating;
 	public string difficulty;
@@ -39,6 +49,7 @@ public class Song {
 	public string music = "";
 	public float offset = 0f;
 	public List<Chart> charts = new List<Chart>();
+	public List<Stop> stops = new List<Stop>();
 }
 
 public class SongParser {
