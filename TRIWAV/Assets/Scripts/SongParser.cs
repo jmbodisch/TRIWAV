@@ -85,6 +85,27 @@ public class SongParser {
 				result.offset = float.Parse(split [1].TrimEnd (';'), CultureInfo.InvariantCulture.NumberFormat);
 			if (flag == "#MUSIC")
 				result.music = split [1].TrimEnd (';');
+			if (flag == "#STOPS") {
+				Debug.Log ("Got to stops");
+				List<string> stopStrings = new List<string> ();
+
+				stopStrings.Add (split [1]);
+
+				string nextLn = file.ReadLine ();
+				while (nextLn[0] != ';') {
+					stopStrings.Add (nextLn);
+					Debug.Log (nextLn);
+				}
+
+				for (int i = 0; i < stopStrings.Count; i++) {
+					float beat, time;
+					string[] splitStop = stopStrings [i].Split ('=');
+					beat = float.Parse (splitStop [0]);
+					time = float.Parse (splitStop [1]);
+					result.stops.Add (new Stop (beat, time));
+					Debug.Log ($"Added {time} stop at {beat}");
+				}
+			}
 			if (flag == "#NOTES") {
 				Chart thisChart = new Chart ();
 				thisChart.topLeftNotes = new List<noteSpawn> ();
