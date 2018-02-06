@@ -92,9 +92,9 @@ public class SongParser {
 				stopStrings.Add (split [1]);
 
 				string nextLn = file.ReadLine ();
-				while (nextLn[0] != ';') {
+				while (!nextLn.Contains (";")) {
 					stopStrings.Add (nextLn);
-					Debug.Log (nextLn);
+					nextLn = file.ReadLine();
 				}
 
 				for (int i = 0; i < stopStrings.Count; i++) {
