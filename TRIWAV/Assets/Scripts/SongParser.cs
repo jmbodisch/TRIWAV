@@ -24,6 +24,16 @@ public class BPM {
 	}
 }
 
+public class Stop {
+	public float beat;
+	public float time;
+
+	public Stop (float b, float t) {
+		beat = b;
+		time = t;
+	}
+}
+
 public struct Chart {
 	public int rating;
 	public string difficulty;
@@ -39,6 +49,7 @@ public class Song {
 	public string music = "";
 	public float offset = 0f;
 	public List<Chart> charts = new List<Chart>();
+	public List<Stop> stops = new List<Stop>();
 }
 
 public class SongParser {
@@ -74,6 +85,27 @@ public class SongParser {
 				result.offset = float.Parse(split [1].TrimEnd (';'), CultureInfo.InvariantCulture.NumberFormat);
 			if (flag == "#MUSIC")
 				result.music = split [1].TrimEnd (';');
+			if (flag == "#STOPS") {
+				Debug.Log ("Got to stops");
+				List<string> stopStrings = new List<string> ();
+
+				stopStrings.Add (split [1]);
+
+				string nextLn = file.ReadLine ();
+				while (!nextLn.Contains (";")) {
+					stopStrings.Add (nextLn);
+					nextLn = file.ReadLine();
+				}
+
+				for (int i = 0; i < stopStrings.Count; i++) {
+					float beat, time;
+					string[] splitStop = stopStrings [i].Split ('=');
+					beat = float.Parse (splitStop [0]);
+					time = float.Parse (splitStop [1]);
+					result.stops.Add (new Stop (beat, time));
+					Debug.Log ($"Added {time} stop at {beat}");
+				}
+			}
 			if (flag == "#NOTES") {
 				Chart thisChart = new Chart ();
 				thisChart.topLeftNotes = new List<noteSpawn> ();
