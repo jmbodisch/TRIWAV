@@ -17,6 +17,7 @@ public class GameController : MonoBehaviour {
 	public Text scoreText, healthText, comboText, bpmText, timingText, titleText, artistText;
 	public Slider healthSlider;
 	private int bpmIndex = 0;
+	private int stopIndex = 0;
 	float currentBeat;
 
 	public GameObject topLeft, topRight, bottom;
@@ -72,6 +73,15 @@ public class GameController : MonoBehaviour {
 			if (currentSong.bpms [bpmIndex+1].beat <= currentBeat) {
 				bpmIndex++;
 				bpm = currentSong.bpms [bpmIndex].value;
+			}
+		}
+
+		//check for stops
+		if (stopIndex + 1 < currentSong.stops.Count) {
+			if (currentSong.stops [stopIndex+1].beat <= currentBeat) {
+				//convert the stop's duration into beats and subtract from current beat
+				currentBeat -= currentSong.stops [stopIndex + 1].time * (bpm / 60);
+				stopIndex++;
 			}
 		}
 		
