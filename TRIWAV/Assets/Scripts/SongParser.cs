@@ -48,7 +48,6 @@ public class Song {
 	public string artist = "";
 	public string music = "";
 	public float offset = 0f;
-	public AudioSource audio;
 	public List<Chart> charts = new List<Chart>();
 	public List<Stop> stops = new List<Stop>();
 }
