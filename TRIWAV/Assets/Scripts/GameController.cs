@@ -28,11 +28,27 @@ public class GameController : MonoBehaviour {
 		Screen.SetResolution (800, 1280, false);
 
 		SongParser parsetest = new SongParser ();
+
 		enabled = false;
+
 		currentSong = parsetest.parse ("Assets/Simfiles/Kung Fu Beat.sm");
 		currentChart = currentSong.charts [0];
+		AudioSource audioSource = gameObject.GetComponent<AudioSource> ();
+		AudioClip audioFile = Resources.Load ("Kung Fu Beat") as AudioClip;
+		while (audioFile.loadState == AudioDataLoadState.Loading) {
+			Debug.Log ("Loading");
+		}
+		if (audioFile.loadState == AudioDataLoadState.Loaded) {
+			audioSource.clip = audioFile;
+			audioSource.Play ();
+		} else {
+			Debug.Log ("Error Loading Song");
+		}
+
 		//Debug.Log (currentSong.offset);
+
 		enabled = true;
+
 		score = 0;
 		health = 100;
 		combo = 0;
@@ -47,6 +63,7 @@ public class GameController : MonoBehaviour {
 		for (int i = 0; i < currentSong.bpms.Count; i++) {
 			//Debug.Log ($"{currentSong.bpms[i].value} at {currentSong.bpms [i].time}");
 		}
+			
 	}
 
 	void Update()
